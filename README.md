@@ -23,6 +23,48 @@ Simply Study is a production-grade, highly optimized backend scheduling and book
 
 ---
 
+## 📋 Assumptions Made
+
+1. **Header-Based Simulated Authentication**: For ease of evaluation and testing, role authentication is resolved via request headers (`UserId` or `X-User-Id`). In a production system, these would be extracted from verified JWT tokens.
+2. **Offering-Level Booking**: Booking happens strictly at the offering level. Parents book the entire set of sessions representing that course section, and cannot book individual sessions independently.
+3. **Calendar Integrity Constraints**: Conflict prevention operates per parent. While different parents can book overlapping offerings, a single parent is prevented from booking any offering whose sessions overlap with their existing booked sessions.
+4. **Timezone Fallback**: When timezone header values are absent or invalid, the system defaults formatting to Coordinated Universal Time (`UTC`).
+5. **No Double Bookings**: A parent cannot book the same course offering more than once (enforced by a database level unique constraint).
+
+---
+
+## 📖 API Documentation (Endpoints Reference)
+
+Below is an overview of the REST API endpoints exposed by the service. All endpoints return a standard JSON envelope: `ApiResponse<T>`.
+
+### Teacher API Endpoints
+* **Create User (Teacher)**: `POST /api/users`
+  * Body: `{"name": "Teacher Name", "email": "email@example.com", "role": "TEACHER", "timezone": "America/New_York"}`
+* **Create Course**: `POST /api/courses`
+  * Headers: `UserId` (Teacher ID)
+  * Body: `{"title": "Java Basics", "description": "Learn Java"}`
+* **Create Offering**: `POST /api/offerings`
+  * Headers: `UserId` (Teacher ID)
+  * Body: `{"courseId": 1, "title": "Summer Batch", "maxCapacity": 10}`
+* **Add Sessions to Offering**: `POST /api/offerings/{offeringId}/sessions`
+  * Headers: `UserId` (Teacher ID)
+  * Body: `{"sessions": [{"startTime": "2026-06-15T09:00:00Z", "endTime": "2026-06-15T11:00:00Z"}]}`
+* **Get Teacher Offerings**: `GET /api/offerings`
+  * Headers: `UserId` (Teacher ID), `Timezone` (e.g. `America/New_York`)
+
+### Parent API Endpoints
+* **Create User (Parent)**: `POST /api/users`
+  * Body: `{"name": "Parent Name", "email": "parent@example.com", "role": "PARENT", "timezone": "America/Chicago"}`
+* **Get Available Offerings**: `GET /api/offerings`
+  * Headers: `UserId` (Parent ID), `Timezone` (e.g. `America/Chicago`)
+* **Book Offering**: `POST /api/bookings`
+  * Headers: `UserId` (Parent ID)
+  * Body: `{"offeringId": 1}`
+* **Get Booked Offerings**: `GET /api/bookings`
+  * Headers: `UserId` (Parent ID), `Timezone` (e.g. `America/Chicago`)
+
+---
+
 ## 💾 Database Schema Overview
 
 ```
@@ -162,4 +204,3 @@ docker run -p 8080:8080 \
   -e SPRING_DATASOURCE_PASSWORD=project \
   simply-study-app
 ```
-# simply-study
