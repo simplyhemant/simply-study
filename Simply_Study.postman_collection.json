@@ -1,0 +1,491 @@
+{
+  "info": {
+    "_postman_id": "8b51d8b9-4f36-4a6c-9bb9-6d8b368cbf12",
+    "name": "Simply Study API Collection",
+    "description": "Production-grade Postman collection for the Simply Study live-learning class booking system. Features organized folders, dynamic headers, local timezone handling, and full pagination options.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Create User (Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"teacher-id-123\",\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane.doe@simplystudy.com\",\n  \"role\": \"TEACHER\",\n  \"timezone\": \"America/New_York\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Registers a new user with the TEACHER role."
+          },
+          "response": []
+        },
+        {
+          "name": "Create User (Parent)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"parent-id-456\",\n  \"name\": \"John Smith\",\n  \"email\": \"john.smith@simplystudy.com\",\n  \"role\": \"PARENT\",\n  \"timezone\": \"Asia/Kolkata\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Registers a new user with the PARENT role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users (Paginated) (Teacher/Parent)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users?page=0&size=10&role=TEACHER",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Zero-based page index"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "description": "Number of records per page"
+                },
+                {
+                  "key": "role",
+                  "value": "TEACHER",
+                  "description": "Optional role filter (TEACHER or PARENT)"
+                }
+              ]
+            },
+            "description": "Retrieves users optionally filtered by role, with pagination parameters."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID (Teacher/Parent)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/teacher-id-123",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "teacher-id-123"
+              ]
+            },
+            "description": "Retrieve profile details for a specific user ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Course Management",
+      "item": [
+        {
+          "name": "Create Course (Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "teacher-id-123",
+                "description": "ID of the authorized Teacher creating this course"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Advanced Java Programming\",\n  \"description\": \"Mastering multithreading, concurrency, and performance tuning in Java.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "courses"
+              ]
+            },
+            "description": "Creates a course metadata envelope. Restricted to TEACHER roles."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Courses (Paginated) (Teacher/Parent)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses?page=0&size=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "courses"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Zero-based page index"
+                },
+                {
+                  "key": "size",
+                  "value": "5",
+                  "description": "Number of courses to return"
+                }
+              ]
+            },
+            "description": "Lists all available courses in the catalog, with support for pagination."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course Metadata (Teacher/Parent)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "courses",
+                "1"
+              ]
+            },
+            "description": "Retrieves basic course metadata."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Detailed Course Schedule (Teacher/Parent)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Timezone",
+                "value": "Asia/Kolkata",
+                "description": "Target timezone to format session schedules"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/courses/1/detailed",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "courses",
+                "1",
+                "detailed"
+              ]
+            },
+            "description": "Retrieves comprehensive details of a course, including all offerings and sessions mapped to the user's localized timezone."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Offering Management",
+      "item": [
+        {
+          "name": "Create Offering (Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "teacher-id-123",
+                "description": "ID of the Teacher creating the offering"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": 1,\n  \"title\": \"Advanced Java - Spring 2026 Batch\",\n  \"timezone\": \"America/New_York\",\n  \"maxCapacity\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/offerings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offerings"
+              ]
+            },
+            "description": "Creates a new class offering for a course. Restricted to TEACHER roles."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Sessions to Offering (Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "teacher-id-123",
+                "description": "ID of the Teacher who owns the offering"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessions\": [\n    {\n      \"startTime\": \"2026-06-15T09:00:00Z\",\n      \"endTime\": \"2026-06-15T11:00:00Z\"\n    },\n    {\n      \"startTime\": \"2026-06-17T09:00:00Z\",\n      \"endTime\": \"2026-06-17T11:00:00Z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/offerings/1/sessions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offerings",
+                "1",
+                "sessions"
+              ]
+            },
+            "description": "Adds schedule slots (sessions) to an offering. Enforces validation to prevent internal session overlapping."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Teacher Offerings (Paginated) (Teacher)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "teacher-id-123",
+                "description": "ID of the Teacher requesting their dashboard"
+              },
+              {
+                "key": "Timezone",
+                "value": "America/New_York",
+                "description": "Target timezone to display session schedules"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/offerings?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offerings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of offerings taught by the teacher identified by the UserId header."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Offerings (Paginated) (Parent)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "parent-id-456",
+                "description": "ID of the Parent/Student seeking classes"
+              },
+              {
+                "key": "Timezone",
+                "value": "Asia/Kolkata",
+                "description": "Target timezone to format schedule listings"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/offerings?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "offerings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Returns active, published, and upcoming offerings available for the parent to book, with dynamic timezone offsets."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking Management",
+      "item": [
+        {
+          "name": "Book Offering (Parent)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "parent-id-456",
+                "description": "ID of the parent booking the offering"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offeringId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            },
+            "description": "Books an entire offering for the parent. Enforces concurrency-safe capacity locks and overlapping session conflict prevention."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Booked Offerings (Parent)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "UserId",
+                "value": "parent-id-456",
+                "description": "ID of the Parent requesting their bookings"
+              },
+              {
+                "key": "Timezone",
+                "value": "Asia/Kolkata",
+                "description": "Target timezone to format session schedules"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            },
+            "description": "Lists all offerings booked by the specified parent."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
