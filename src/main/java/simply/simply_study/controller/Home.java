@@ -29,7 +29,7 @@ public class Home{
                     
                     <h3>🔗 API Documentation Resource Links:</h3>
                     <ul>
-                        <li>🛠️ <strong>Swagger UI (Local Backend Sandbox):</strong> <a href="https://simply-study.onrender.com/swagger-ui/index.htmll" target="_blank">Open Swagger Dashboard</a></li>
+                        <li>🛠️ <strong>Swagger UI (Local Backend Sandbox):</strong> <a href="https://simply-study.onrender.com/swagger-ui/index.html" target="_blank">Open Swagger Dashboard</a></li>
                         <li>🚀 <strong>Postman API Documentation (Public Web):</strong> <a href="https://documenter.getpostman.com/view/39898850/2sBXwnts5z" target="_blank">Open Postman Collection Docs</a></li>
                     </ul>
                 </div>
