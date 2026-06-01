@@ -6,8 +6,11 @@ Simply Study is a production-grade, highly optimized backend scheduling and book
 
 ## 🚀 Live Links & API Resources
 
-- **Postman API Documentation**: [Simply Study Postman Collection](https://documenter.getpostman.com/view/39898850/2sBXwnts5z)
-- **Interactive Swagger UI**: `/swagger-ui.html` (e.g. `http://localhost:8080/swagger-ui.html` when running locally)
+- **Published Postman API Documentation**: [Simply Study Web Collection Documentation](https://documenter.getpostman.com/view/39898850/2sBXwnts5z)
+- **Live Production Swagger UI**: [https://simply-study.onrender.com/swagger-ui/index.html](https://simply-study.onrender.com/swagger-ui/index.html)
+- **Live Production OpenAPI Schema JSON**: [https://simply-study.onrender.com/v3/api-docs](https://simply-study.onrender.com/v3/api-docs)
+- **Local Swagger UI Dashboard**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html) *(When running your application locally)*
+
 *Swagger UI is pre-configured with global parameters for headers (`UserId`, `X-User-Id`, and `Timezone`) to facilitate quick, interactive endpoint testing.*
 
 ---
